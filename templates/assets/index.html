@@ -1,0 +1,188 @@
+{% extends '../layout.html' %}
+{% load static %}
+{% block title %}-Assets{% endblock title %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-6">
+
+        <h4>A list of assets in your Location</h4>
+        <div>
+            <datalist id="assets">
+                {% for a in assets %}
+                <option data-a="{{a.id}}" data-action="add" class="update-delivery">{{a.name}} : {{a.barcode}} </option>
+                {% endfor %}
+            </datalist>
+            <input autoComplete="on" list="assets" />
+
+
+            <table class="table table-responsive-sm table-responsive-lg table-responsive table-responsive-xs">
+                <thead>
+                    <tr>
+                        <th>name</th>
+                        <th>barcode</th>
+                        <th>serialNumber</th>
+                        <th>location</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                {% for a in assets %}
+                <tbody>
+                    <tr>
+                        <td>{{a.name}}</td>
+                        <td>{{a.barcode}}</td>
+                        <td>{{a.serialNumber}}</td>
+                        <td>{{a.location}}</td>
+                        <td>
+                            <button data-a="{{a.id}}" data-action="add"
+                                class="btn btn-sm btn-primary mb-2 update-delivery">
+                                Dispatch
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                {% endfor %}
+            </table>
+        </div>
+
+    </div>
+    <div class="col-sm-6">
+        <table>
+            <thead>
+                <tr>
+                    <th width="200">
+                        <img src="{% static 'img/logo.png' %}" class="rounded float-left" style="width:40%"
+                            alt="Responsive image">
+                    </th>
+                    <th>
+                        Dnote No: {{delivery}}
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>From:{{staff.location}}</td>
+                    <td><datalist id="branch">
+                        {% for b in branch %}
+                        <option class="form">{{b.name}}</option>
+                        {% endfor %}
+                    </datalist>
+                    <input autoComplete="on" list="branch" class="form-control" placeholder="TO:" /></td>
+                </tr>
+                <tr>
+                    <td>
+                    Created On:{{delivery.date_dispatched|date:"d m, y"}} {{delivery.date_dispatched|time:"H:i"}}
+                    </td>
+                    <td>
+                        Created By:{{staff}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        {% if deliveryitemsss %}
+        <table class="table table-responsive-sm table-responsive-lg table-responsive table-responsive-xs">
+            <thead>
+                <tr>
+                    <th>ASSET</th>
+                    <th>BARCODE</th>
+                    <th>QUANTITY</th>
+                    <th>LOCATION</th>
+                    <th>DELIVERY</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in deliveryitemsss %}
+                <tr>
+                    <td scope="row">{{a.asset}}</td>
+                    <td>{{a.asset.barcode}}</td>
+                    <td>{{a.quantity}}</td>
+                    <td>{{a.asset.location}}</td>
+                    <td>{{a.delivery}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h3>Dispatch button will print.</h3>
+        <a href="{% url 'assets:process_Response' %}">
+            <button id="dispatch-assets" type="submit" class="btn btn-primary btn-sm">Dispatch</button>
+        </a>
+        {% else %}
+            <div class="text-center btn-warning">
+
+                No Assets Added Yet!
+            </div>
+            <!-- Add Assets To Current delivery note {{delivery}} -->
+        <br />
+        <br />
+        <br />
+        <!-- Button trigger modal 
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Deliveries
+        </button>
+                    -->
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Latest Deliveries</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <ul>
+                            {% for c in deliveryList %}
+                            {% endfor %}
+                            <table
+                                class="table table-responsive-sm table-responsive-lg table-responsive table-responsive-xs">
+                                <thead>
+                                    <tr>
+                                        <th>Delivery No</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Status</th>
+                                        <th>Print</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for a in deliveryList %}
+                                    <tr>
+                                        <td scope="row">{{a.deliveryNo}}</td>
+                                        <td>{{a.fromLocation}}</td>
+                                        <td>{{a.quantity}}</td>
+                                        <td>{{a.toLocation}}</td>
+                                        <td>
+                                            <a href="{% url 'assets:pdf' a.pk %}">
+                                                <button class="btn btn-primary">Print</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                            <hr>
+
+                        </ul>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+
+
+    </div>
+</div>
+
+
+{% endblock content %}

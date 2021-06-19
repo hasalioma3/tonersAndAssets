@@ -1,0 +1,41 @@
+
+{% extends 'layout.html' %}
+{% block title %}
+Search Results
+{% endblock title %}
+
+{% block content %}
+
+<h2>Search Results</h2>
+
+<table class="table">
+    <tr>
+        <th>
+        <form class="form-inline my-2 my-lg-0" action="{% url 'search' %}" method="GET">
+          <input type="search" placeholder="Search Branch.." class="form-control" span="4" name="q">
+        </form>
+        </th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    <tr>
+      <th>Branch</th>
+      <th>Toner Model</th>
+      <th>Reading</th>
+      <th>Date Sent</th>
+      <th>Date Created by</th>
+    </tr>
+    {% for toner in toners %}
+    <tr>
+      <td>{{toner.branch}}</td>
+      <td>{{toner.tonermodels}}</td>
+      <td>{{toner.reading}}</td>
+      <td>{{toner.created_on}}</td>
+      <td>{{toner.created_by}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+{% endblock content %}

@@ -1,0 +1,25 @@
+Change Layout for assets dropdown.
+                ASSETS
+>add search functionality(done)
+>add Pagination.(done)
+Add regular Authentication.(done)
+>add Domain Authentication.(Done)
+
+
+>add Assets transactions(repair)(pending)
+    ADD NEW ASSETS TO DNOTE(done)
+    ADD NEW TO BRANCH(PENDING)
+    remove from delivery notes(subtract)
+    Set in transit status(dONE)//only assets not in transit will appear in the list
+    Staff will only see assets in their location.(DONE)
+    disable button for asset already added to delivery(DONE).
+    accessories will still appear in the list to change qty(pending)
+    dispatched date will update to when the dispatch button was clicked.(done)
+    if it's an accessory have others category with a discription editable.(pending)
+    
+>Deliveries 
+    Pagination(pending)
+
+>Print directly with dispatch button(pending)
+
+        module to assign assets(pending)

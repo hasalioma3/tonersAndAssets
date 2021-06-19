@@ -1,0 +1,103 @@
+{% extends 'layout.html' %} {% load crispy_forms_tags %} {% block title %}
+Toners {% endblock title %} {% block content %}
+
+
+
+<div class="justify-content-center">
+
+  <h1 class="text-center"> TONERS </h1>
+  <div class="row">
+    {% if user.is_authenticated %}
+
+    <div class="col-sm-4">
+      <h3 class="text-center">Dispatch a Toner</h3>
+      <hr>
+      <form action="" method="POST">
+        {% csrf_token %} {{form|crispy}}
+        <input type="submit" value="Submit" class="btn btn-sm btn-info" />
+      </form>
+      <hr>
+      <hr>
+      <hr>
+
+      {% if user.is_superuser %}
+      <h2>Create a New Branch</h2>
+      <form action="" method="POST">
+        {% csrf_token %} {{form2|crispy}}
+        <input type="submit" value="Submit" class="btn btn-sm btn-info" />
+      </form>
+      {% endif %}
+    </div>
+
+    {% endif %}
+
+    <div {% if user.is_authenticated %} class="col-sm-8" id="replaceable-content" {% endif %}>
+      <h3 class="text-center">List of toners Dispatched</h3>
+      <hr>
+      {% if toners %}
+
+      <table class="table table-striped table-responsive mx-auto">
+        <tr>
+          <th>Branch</th>
+          <th>Toner Model</th>
+          <th>Reading</th>
+          <th>Date Sent</th>
+          <th>Time Since</th>
+        </tr>
+        {% for toner in page_obj %}
+        <tr>
+          <td>{{toner.branch}}</td>
+          <td>{{toner.tonermodels}}</td>
+          <td>{{toner.reading}}</td>
+          <td>{{toner.created_on}}</td>
+          <td>{{toner.created_on|timesince }}</td>
+        </tr>
+        {% endfor %}
+        
+      </table>
+
+      <nav aria-label="Page navigation example" style="margin:auto; width:70%;">
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page=1"><i
+                class="fas fa-angle-double-left size:9x"></i> First</a></li>
+          <li class="page-item "><a class="page-link"
+              href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+          {% else %}
+          <li class="page-item disabled"><a class="page-link" href="#"></i> First</a></li>
+          <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
+
+          {% endif %}
+
+          <span class="current">
+            <li class="page-item "><a class="page-link"> Page {{ page_obj.number }} of {{page_obj.paginator.num_pages }}. </a></li>
+          </span>
+
+
+          {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last <i
+                class="fas fa-angle-double-right"></i></a></li>
+          {% else %}
+          <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+          <li class="page-item disabled"><a class="page-link" href="#">Last <i
+                class="fas fa-angle-double-right"></i></a></li>
+          {% endif %}
+
+        </ul>
+      </nav>
+      {% else %}
+      <p>No Toners sent to That Branch Yet.</p>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+{% comment %} {% if request.user|has_group:"ZION MALL" %} 
+    <p>User belongs to my group 
+{% else %}
+    <p>User doesn't belong to ZION MALL</p>
+{% endif %} {% endcomment %}
+
+{% endblock content %}

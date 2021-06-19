@@ -1,0 +1,217 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @page {
+            size: a4 portrait;
+
+            @frame header_frame {
+                /* Static Frame */
+                -pdf-frame-content: header_content;
+                left: 50pt;
+                width: 512pt;
+                top: 20pt;
+                height: 300pt;
+            }
+
+            @frame content_frame {
+                /* Content Frame */
+                left: 50pt;
+                width: 512pt;
+                top: 300pt;
+                height: 700pt;
+            }
+
+            @frame footer_frame {
+                /* Another static Frame */
+                -pdf-frame-content: footer_content;
+                left: 50pt;
+                width: 512pt;
+                top: 730pt;
+                height: 70pt;
+                text-align: center;
+            }
+        }
+
+        body {
+            font-family: "Open Sans", sans-serif;
+            line-height: 1.25;
+        }
+
+        .a {
+            border: 1px solid black;
+            border-collapse: collapse;
+            margin: 2;
+            padding: 0;
+            width: 100%;
+            vertical-align: bottom;
+            table-layout: fixed;
+            border-radius: 6px;
+            -moz-border-radius: 6px;
+        }
+
+        th {
+            height: 30px;
+            vertical-align: bottom;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .b {
+            background-color: darkgrey
+        }
+
+        .d {
+            padding: 5px;
+            text-align: left;
+            vertical-align: bottom;
+            text-decoration: solid;
+        }
+
+        .l {
+            display: inline-block;
+            font-size: 25px;
+            transform: scale(.8, 1);
+        }
+        h5{
+            font-size: 10px;
+            transform: scale(.8, 1);
+            line-height: 8px;
+        }
+
+        .f {
+            font-family: 'Courier New', monospace;
+
+        }
+        th{
+            background-color:grey
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Content for Static Frame 'header_frame' -->
+    <div id="header_content">
+        <table>
+            <tr>
+                <td><img src="{{logo.logo.path}}" alt="image" height="80" /></td>
+                <td>
+                    <h1><u class="f l">DELIVERY NOTE</u></h1>
+                </td>
+                <td>
+                    Naivas Limited (Head Office) Nairobi <br>
+                    P.O Box 61600-00200 <br>
+                    Nairobi,Kenya <br> <br>
+                    Tel: +254 (020) 3506112/3/2329801/2 <br>
+                    Cell:0710 110 568 / 0731 642238 <br>
+                    E-mail:nssshq@naivas.co.ke <br>
+                    Web:www.naivas.co.ke
+
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td class="l f">
+                    <h1>NAIVAS LIMITED</h1>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+        <br>
+        {% for b in delivery %}
+        <table>
+            <tr>
+                <td>
+                    <h1 class="f">Delivery No: <u class="b">{{b.deliveryNo}}</u> </h1>
+                </td>
+                <td></td>
+                <td>
+                    <h1 class="f">Date: <u class="b"> {{b.date_dispatched | date}} </u> </h1>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h1 class="f">From: {{b.fromLocation}}</h1>
+                </td>
+                <td>
+                    <h1 class="f">To:{{b.toLocation}} </h1>
+                </td>
+                <td>
+                    <h1 class="f">Time: <u class="b"> {{b.date_dispatched | time}} </u> </h1>
+                </td>
+            </tr>
+        </table>
+
+
+        <!-- HTML Content -->
+        <hr />
+        <table class="a">
+            <thead>
+                <tr>
+                <th>
+                    <h1>#</h1>
+                </th>
+                <th>
+                    <h1>ASSET</h1>
+                </th>
+                <th>
+                    <h1>BARCODE</h1>
+                </th>
+                <th>
+                    <h1>QTY</h1>
+                </th>
+            </tr>    
+            </thead>
+            {% for a in b.get_delivery_assets %}
+            <tr >
+                <td width="20">
+                    <h5>{{forloop.counter}}</h5>
+                </td>
+                <td class="d" scope="row" width="280"> <h5>{{a.asset.make}} {{a.asset.amodel}} {{a.asset.name}}</h5> </td>
+                <td class="d"> <h5>{{a.asset.barcode}}</h5> </td>
+                <td class="d" width="60"> <h5>{{a.quantity}}</h5> </td>
+
+            </tr>
+            {% endfor %}
+
+        </table>
+        {% endfor %}
+
+        <p class="separator">&nbsp;<p>
+
+
+                <!-- Content for Static Frame 'footer_frame' -->
+
+                <div id="footer_content">
+                    <table class="f">
+                        
+                        <tr>
+                            <td width="150"></td>
+                            <td width="30" >  </td>
+                            <td><h2>Received By:&nbsp;&nbsp;&nbsp;&nbsp;_________________________________</h2></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td> </td>
+                            <td><br> Signature & Ruber Stamp</td>
+                        </tr>
+                    </table>
+                        <br />
+                    <table>
+                        
+                        <tr class="f">
+                            <td> </td>
+                            <td>Page <pdf:pagenumber> of <pdf:pagecount></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+</body>
+
+</html>
