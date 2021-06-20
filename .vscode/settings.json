@@ -1,3 +1,20 @@
 {
-    "python.pythonPath": "env/bin/python"
+    "python.pythonPath": "env/bin/python",
+    "sqltools.connections": [
+        {
+            "mssqlOptions": {
+                "appName": "SQLTools",
+                "useUTC": true,
+                "encrypt": true
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 1433,
+            "askForPassword": true,
+            "driver": "MSSQL",
+            "name": "local",
+            "username": "sa",
+            "database": "test"
+        }
+    ]
 }

@@ -7,17 +7,19 @@
 
         <h4>A list of assets in your Location</h4>
         <div>
+        <form class="form-inline">
             <datalist id="assets">
                 {% for a in assets %}
                 <option data-a="{{a.id}}" data-action="add" class="update-delivery">{{a.name}} : {{a.barcode}} </option>
                 {% endfor %}
             </datalist>
-            <input autoComplete="on" list="assets" />
-
+            <input autoComplete="on" list="assets" class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search" name="q" />
+        </form>
 
             <table class="table table-responsive-sm table-responsive-lg table-responsive table-responsive-xs">
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>name</th>
                         <th>barcode</th>
                         <th>serialNumber</th>
@@ -28,6 +30,8 @@
                 {% for a in assets %}
                 <tbody>
                     <tr>
+                    
+                        <td>{{forloop.counter}}</td>
                         <td>{{a.name}}</td>
                         <td>{{a.barcode}}</td>
                         <td>{{a.serialNumber}}</td>
@@ -35,8 +39,9 @@
                         <td>
                             <button data-a="{{a.id}}" data-action="add"
                                 class="btn btn-sm btn-primary mb-2 update-delivery">
-                                Dispatch
+                                Add
                             </button>
+                            
                         </td>
                     </tr>
                 </tbody>
@@ -89,6 +94,7 @@
                     <th>QUANTITY</th>
                     <th>LOCATION</th>
                     <th>DELIVERY</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -96,9 +102,33 @@
                 <tr>
                     <td scope="row">{{a.asset}}</td>
                     <td>{{a.asset.barcode}}</td>
-                    <td>{{a.quantity}}</td>
+                    <td>
+                    {% if a.asset.accessory %}
+                     <button data-a="{{a.asset.id}}" data-action="remove"
+                                class="btn btn-sm update-delivery">
+                                -
+                            </button>  
+                     {{a.quantity}} 
+                     <button data-a="{{a.asset.id}}" data-action="add"
+                                class="btn btn-sm update-delivery">
+                                +
+                            </button>  
+                    
+                    {% else %}
+                    {{a.quantity}} 
+                    {% endif %}
+                      </td>
                     <td>{{a.asset.location}}</td>
                     <td>{{a.delivery}}</td>
+                    <td>
+                    {% if a.asset.accessory %}
+                    {% else %}
+                    <button data-a="{{a.asset.id}}" data-action="remove"
+                                class="btn btn-sm btn-primary mb-2 update-delivery">
+                                Remove
+                            </button>
+                            {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
