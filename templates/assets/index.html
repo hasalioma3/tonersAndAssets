@@ -63,15 +63,15 @@
                 <tr>
                     <td>From:{{staff.location}}</td>
                     <td><datalist id="branch">
-                        {% for b in branch %}
-                        <option class="form">{{b.name}}</option>
-                        {% endfor %}
-                    </datalist>
-                    <input autoComplete="on" list="branch" class="form-control" placeholder="TO:" /></td>
+                            {% for b in branch %}
+                            <option class="form">{{b.name}}</option>
+                            {% endfor %}
+                        </datalist>
+                        <input autoComplete="on" list="branch" class="form-control" placeholder="TO:" /></td>
                 </tr>
                 <tr>
                     <td>
-                    Created On:{{delivery.date_dispatched|date:"d m, y"}} {{delivery.date_dispatched|time:"H:i"}}
+                        Created On:{{delivery.date_dispatched|date:"d m, y"}} {{delivery.date_dispatched|time:"H:i"}}
                     </td>
                     <td>
                         Created By:{{staff}}
@@ -108,19 +108,19 @@
             <button id="dispatch-assets" type="submit" class="btn btn-primary btn-sm">Dispatch</button>
         </a>
         {% else %}
-            <div class="text-center btn-warning">
+        <div class="text-center btn-warning">
 
-                No Assets Added Yet!
-            </div>
-            <!-- Add Assets To Current delivery note {{delivery}} -->
+            No Assets Added Yet!
+        </div>
+        <!-- Add Assets To Current delivery note {{delivery}} -->
         <br />
         <br />
         <br />
-        <!-- Button trigger modal 
+        <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
             Deliveries
         </button>
-                    -->
+
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -133,40 +133,36 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <ul>
-                            {% for c in deliveryList %}
-                            {% endfor %}
-                            <table
-                                class="table table-responsive-sm table-responsive-lg table-responsive table-responsive-xs">
-                                <thead>
-                                    <tr>
-                                        <th>Delivery No</th>
-                                        <th>From</th>
-                                        <th>To</th>
-                                        <th>Status</th>
-                                        <th>Print</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for a in deliveryList %}
-                                    <tr>
-                                        <td scope="row">{{a.deliveryNo}}</td>
-                                        <td>{{a.fromLocation}}</td>
-                                        <td>{{a.quantity}}</td>
-                                        <td>{{a.toLocation}}</td>
-                                        <td>
-                                            <a href="{% url 'assets:pdf' a.pk %}">
-                                                <button class="btn btn-primary">Print</button>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
 
-                            <hr>
+                        <table class="table table-striped ">
+                            <thead>
+                                <tr>
 
-                        </ul>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Delivery No</th>
+                                    <th scope="col">From</th>
+                                    <th scope="col">To</th>
+                                    <th scope="col">Dispatched?</th>
+                                    <th scope="col">Print</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for a in pages %}
+                                <tr>
+                                    <th scope="row">{{forloop.counter}}</th>
+                                    <td>{{a.deliveryNo}}</td>
+                                    <td>{{a.fromLocation}}</td>
+                                    <td>{{a.toLocation}}</td>
+                                    <td>{{a.dispatched}}</td>
+                                    <td>
+                                        <a href="{% url 'assets:pdf' a.pk %}">
+                                            <button class="btn btn-primary">Print</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
 
                     </div>
                     <div class="modal-footer">

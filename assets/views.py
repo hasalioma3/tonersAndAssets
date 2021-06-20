@@ -1,37 +1,67 @@
-from os import name, truncate
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.staticfiles import finders
 from django.conf import settings
 from django.conf.urls import url
-import os
-#render to pdf
+from django.core.paginator import Paginator
+from django.http import JsonResponse
 from django.http import HttpResponse
 from django.template.loader import get_template
+
+#system
+import json
+import datetime
+import os
+from os import name, truncate
+
+#render to pdf 
 from xhtml2pdf import pisa
+
+#Account
+from allauth.account.decorators import login_required
 
 #My Models
 from .models import DeliveryAsset,Asset,Delivery,Location,Logo
-# Create your views here.
-import json
 
-import datetime
-from django.http import JsonResponse
+
+
+@login_required
+def deliveries(request):
+    if request.user.is_authenticated:
+        # staff=request.user.staff
+        deliveryList=Delivery.objects.filter(dispatched=True).order_by('id').reverse()
+        paginator = Paginator(deliveryList,2)
+        page_number=request.GET.get('page')
+        pages=paginator.get_page(page_number)
+    
+    context={
+        'pages':pages,
+    }
+    return render(request, 'assets/deliveries.html', context)
+
+@login_required
 def assets(request):
     if request.user.is_authenticated:
         branch=Location.objects.all()
         staff=request.user.staff
         delivery, dispatched=Delivery.objects.get_or_create(staff=staff, dispatched=False)
-        deliveryList=Delivery.objects.filter(staff=staff, dispatched=True)
+        deliveryList=Delivery.objects.filter(staff=staff, dispatched=True).order_by('id').reverse()
+        #paginate deliveries
+        paginator = Paginator(deliveryList,2)
+        page_number=request.GET.get('page')
+        pages=paginator.get_page(page_number)
+
         # currentDelivery=delivery.deliveryNo
         asset=delivery.deliveryasset_set.all()
         delivery.deliveryNo='DEL-'+ delivery.key1
         delivery.save()
         deliveryitems=delivery.get_delivery_items_no
+
         # deliveryItem2, dispatched = DeliveryAsset.objects.filter()
         deliveryitemsss=delivery.deliveryasset_set.all()
-    assets =Asset.objects.filter(location=request.user.staff.location, transit=False)
+        assets =Asset.objects.filter(location=request.user.staff.location, transit=False)
     context={
+        'pages':pages,
         'branch':branch,
         'delivery':delivery, 
         'staff':staff,
@@ -41,7 +71,7 @@ def assets(request):
         'deliveryitems':deliveryitems
         }
     return render(request, 'assets/index.html', context)
-
+@login_required
 def updateAsset(request):
     staff=request.user.staff
     staff.save()
@@ -67,7 +97,7 @@ def updateAsset(request):
         asset.transit = False
 
     return JsonResponse('Item was Added', safe=False)
- 
+@login_required
 def processResponse(request, *args, **kwargs ):
     # pk = kwargs.get('pk')
     # data=json.loads(request.body)
@@ -82,6 +112,7 @@ def processResponse(request, *args, **kwargs ):
     return redirect('assets:index')
 
 
+@login_required
 def link_callback(uri, rel):
             """
             Convert HTML URIs to absolute system paths so xhtml2pdf can access those
@@ -114,6 +145,7 @@ def link_callback(uri, rel):
             print(path)
             return path
 
+@login_required
 def deliveries_pdf(request, *args, **kwargs):
     pk = kwargs.get('pk')
     if request.user.is_authenticated:

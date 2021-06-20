@@ -9,7 +9,9 @@ Add regular Authentication.(done)
 >add Assets transactions(repair)(pending)
     ADD NEW ASSETS TO DNOTE(done)
     ADD NEW TO BRANCH(PENDING)
-    remove from delivery notes(subtract)
+    remove from delivery notes(subtract)!!!
+    search asset list for dispatch(next)
+    paginate asset list
     Set in transit status(dONE)//only assets not in transit will appear in the list
     Staff will only see assets in their location.(DONE)
     disable button for asset already added to delivery(DONE).
@@ -18,8 +20,8 @@ Add regular Authentication.(done)
     if it's an accessory have others category with a discription editable.(pending)
     
 >Deliveries 
-    Pagination(pending)
+    Pagination(done)
 
 >Print directly with dispatch button(pending)
 
-        module to assign assets(pending)
+        module to assign assets(pending)!!!

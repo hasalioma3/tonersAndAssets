@@ -89,4 +89,4 @@ class DeliveryAsset(models.Model):
     def get_deliveryNoteNo(self):
         dnn=self.delivery_set.all()
         return dnn
-    
+
