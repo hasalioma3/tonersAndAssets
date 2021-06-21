@@ -16,7 +16,7 @@ Add regular Authentication.(done)
     accessories will still appear in the list to change qty(pending)
     dispatched date will update to when the dispatch button was clicked.(done)
     if it's an accessory have others category with a discription editable.(pending)
-    
+    Assets can be uploaded from excel and check duplicates.
 >Deliveries 
     Pagination(pending)
 
