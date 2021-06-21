@@ -10,20 +10,19 @@
         <form class="form-inline">
             <datalist id="assets">
                 {% for a in assets %}
-                <option data-a="{{a.id}}" data-action="add" class="update-delivery">{{a.name}} : {{a.barcode}} </option>
+                <option data-a="{{a.id}}" data-action="add" class="update-delivery">{{a.barcode}}</option>
                 {% endfor %}
             </datalist>
-            <input autoComplete="on" list="assets" class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search" name="q" />
+            <input autoComplete="off" list="assets" class="form-control w-100" type="text" placeholder="Search" aria-label="Search" name="q" />
         </form>
+        <hr />
 
-            <table class="table table-responsive-sm table-responsive-lg table-responsive table-responsive-xs">
+            <table class="table table-sm table-striped">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>name</th>
                         <th>barcode</th>
-                        <th>serialNumber</th>
-                        <th>location</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -34,11 +33,9 @@
                         <td>{{forloop.counter}}</td>
                         <td>{{a.name}}</td>
                         <td>{{a.barcode}}</td>
-                        <td>{{a.serialNumber}}</td>
-                        <td>{{a.location}}</td>
                         <td>
                             <button data-a="{{a.id}}" data-action="add"
-                                class="btn btn-sm btn-primary mb-2 update-delivery">
+                                class="btn btn-sm btn-primary update-delivery">
                                 Add
                             </button>
                             
@@ -51,7 +48,7 @@
 
     </div>
     <div class="col-sm-6">
-        <table>
+        <table >
             <thead>
                 <tr>
                     <th width="200">
@@ -86,13 +83,13 @@
         </table>
         <br>
         {% if deliveryitemsss %}
-        <table class="table table-responsive-sm table-responsive-lg table-responsive table-responsive-xs">
+        <table class="table table-sm table-striped">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>ASSET</th>
                     <th>BARCODE</th>
                     <th>QUANTITY</th>
-                    <th>LOCATION</th>
                     <th>DELIVERY</th>
                     <th>Action</th>
                 </tr>
@@ -100,6 +97,7 @@
             <tbody>
                 {% for a in deliveryitemsss %}
                 <tr>
+                    <td scope="row">{{forloop.counter}}</td>
                     <td scope="row">{{a.asset}}</td>
                     <td>{{a.asset.barcode}}</td>
                     <td>
@@ -118,7 +116,6 @@
                     {{a.quantity}} 
                     {% endif %}
                       </td>
-                    <td>{{a.asset.location}}</td>
                     <td>{{a.delivery}}</td>
                     <td>
                     {% if a.asset.accessory %}

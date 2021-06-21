@@ -7,6 +7,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.template.loader import get_template
+from django.db.models import Q
 
 # system
 import json
@@ -50,7 +51,7 @@ def assets(request):
         deliveryList = Delivery.objects.filter(
             staff=staff, dispatched=True).order_by('id').reverse()
         # paginate deliveries
-        paginator = Paginator(deliveryList, 2)
+        paginator = Paginator(deliveryList, 5)
         page_number = request.GET.get('page')
         pages = paginator.get_page(page_number)
 
@@ -62,8 +63,18 @@ def assets(request):
 
         # deliveryItem2, dispatched = DeliveryAsset.objects.filter()
         deliveryitemsss = delivery.deliveryasset_set.all()
-        assets = Asset.objects.filter(
-            location=request.user.staff.location, transit=False)
+        # Search Assets
+        url_parameter = request.GET.get("q")
+        if url_parameter: 
+            assets = Asset.objects.filter(
+                barcode__icontains= url_parameter,
+                location=request.user.staff.location, 
+                transit=False
+                )
+        else:
+            assets = Asset.objects.filter(
+                location=request.user.staff.location, transit=False)
+
     context = {
         'pages': pages,
         'branch': branch,
@@ -97,17 +108,19 @@ def updateAsset(request):
         deliveryItem.quantity = (deliveryItem.quantity + 1)
         if asset.accessory != True:
             asset.transit = True
-        
+         
     elif action == 'remove':
-        deliveryItem.quantity = (deliveryItem.quantity - 1) 
+        deliveryItem.quantity = (deliveryItem.quantity - 1)
     deliveryItem.save()
     asset.save()
+     
     if deliveryItem.quantity <= 0:
         deliveryItem.delete()
         asset.transit = False
     asset.save()
 
-    return JsonResponse('Item was Added', safe=False)
+    return redirect('assets:index')
+    # return JsonResponse('Item was Added', safe=False)
 
 
 @login_required
@@ -126,7 +139,7 @@ def processResponse(request, *args, **kwargs):
     return redirect('assets:index')
 
 
-@login_required
+
 def link_callback(uri, rel):
     """
     Convert HTML URIs to absolute system paths so xhtml2pdf can access those
@@ -160,7 +173,7 @@ def link_callback(uri, rel):
     return path
 
 
-@login_required
+
 def deliveries_pdf(request, *args, **kwargs):
     pk = kwargs.get('pk')
     if request.user.is_authenticated:

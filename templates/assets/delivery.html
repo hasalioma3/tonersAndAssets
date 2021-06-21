@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,14 +17,14 @@
                 left: 50pt;
                 width: 512pt;
                 top: 20pt;
-                height: 300pt;
+                height: 150pt;
             }
 
             @frame content_frame {
                 /* Content Frame */
                 left: 50pt;
                 width: 512pt;
-                top: 300pt;
+                top: 190pt;
                 height: 700pt;
             }
 
@@ -62,7 +63,8 @@
         }
 
         .b {
-            background-color: darkgrey
+            background-color: darkgrey;
+            
         }
 
         .d {
@@ -77,7 +79,8 @@
             font-size: 25px;
             transform: scale(.8, 1);
         }
-        h5{
+
+        h5 {
             font-size: 10px;
             transform: scale(.8, 1);
             line-height: 8px;
@@ -87,8 +90,9 @@
             font-family: 'Courier New', monospace;
 
         }
-        th{
-            background-color:grey
+
+        th {
+            background-color: grey
         }
     </style>
 </head>
@@ -98,7 +102,9 @@
     <div id="header_content">
         <table>
             <tr>
-                <td><img src="{{logo.logo.path}}" alt="image" height="80" /></td>
+                <td>
+                    <img src={{logo.logo.url}} alt="image" height="70" />
+                </td>
                 <td>
                     <h1><u class="f l">DELIVERY NOTE</u></h1>
                 </td>
@@ -136,7 +142,7 @@
             </tr>
             <tr>
                 <td>
-                    <h1 class="f">From: {{b.fromLocation}}</h1>
+                    <h1 class="f">From:<u class="b">{{b.fromLocation}}</u> </h1>
                 </td>
                 <td>
                     <h1 class="f">To:{{b.toLocation}} </h1>
@@ -146,35 +152,42 @@
                 </td>
             </tr>
         </table>
-
+    </div>
 
         <!-- HTML Content -->
         <hr />
         <table class="a">
             <thead>
                 <tr>
-                <th>
-                    <h1>#</h1>
-                </th>
-                <th>
-                    <h1>ASSET</h1>
-                </th>
-                <th>
-                    <h1>BARCODE</h1>
-                </th>
-                <th>
-                    <h1>QTY</h1>
-                </th>
-            </tr>    
+                    <th>
+                        <h1>#</h1>
+                    </th>
+                    <th>
+                        <h1>ASSET</h1>
+                    </th>
+                    <th>
+                        <h1>BARCODE</h1>
+                    </th>
+                    <th>
+                        <h1>QTY</h1>
+                    </th>
+                </tr>
             </thead>
             {% for a in b.get_delivery_assets %}
-            <tr >
+            <tr>
                 <td width="20">
                     <h5>{{forloop.counter}}</h5>
                 </td>
-                <td class="d" scope="row" width="280"> <h5>{{a.asset.make}} {{a.asset.amodel}} {{a.asset.name}}</h5> </td>
-                <td class="d"> <h5>{{a.asset.barcode}}</h5> </td>
-                <td class="d" width="60"> <h5>{{a.quantity}}</h5> </td>
+                <td class="d" scope="row" width="280">
+                    <h5>{{a.asset.make}} {{a.asset.amodel}} {{a.asset.name}}</h5>
+                </td>
+    
+                <td class="d">
+                    <h5>{{a.asset.barcode}}</h5>
+                </td>
+                <td class="d" width="60">
+                    <h5>{{a.quantity}}</h5>
+                </td>
 
             </tr>
             {% endfor %}
@@ -183,34 +196,39 @@
         {% endfor %}
         <p class="separator">&nbsp;<p>
 
+    <!-- Content for Static Frame 'footer_frame' -->
 
-                <!-- Content for Static Frame 'footer_frame' -->
+    <div id="footer_content">
+        <table class="f">
 
-                <div id="footer_content">
-                    <table class="f">
-                        
-                        <tr>
-                            <td width="150"></td>
-                            <td width="30" >  </td>
-                            <td><h2>Received By:&nbsp;&nbsp;&nbsp;&nbsp;_________________________________</h2></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td> </td>
-                            <td><br> Signature & Ruber Stamp</td>
-                        </tr>
-                    </table>
-                        <br />
-                    <table>
-                        
-                        <tr class="f">
-                            <td> </td>
-                            <td>Page <pdf:pagenumber> of <pdf:pagecount></td>
-                            <td></td>
-                        </tr>
-                    </table>
-                    
-                </div>
+            <tr>
+                <td width="150"></td>
+                <td width="30"> </td>
+                <td>
+                    <h2>Received By:&nbsp;&nbsp;&nbsp;&nbsp;_________________________________</h2>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td> </td>
+                <td><br> Signature & Ruber Stamp</td>
+            </tr>
+        </table>
+        <br />
+        <table>
+
+            <tr class="f">
+                <td> </td>
+                <td>
+                </td>
+                <td>
+                <b>Page <pdf:pagenumber> of <pdf:pagecount></b>
+                
+                </td>
+            </tr>
+        </table>
+
+    </div>
 </body>
 
 </html>
