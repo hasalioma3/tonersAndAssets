@@ -119,24 +119,28 @@ def updateAsset(request):
         asset.transit = False
     asset.save()
 
-    return redirect('assets:index')
-    # return JsonResponse('Item was Added', safe=False)
+    # return redirect('assets:index')
+    return JsonResponse('Item was Added', safe=False)
 
 
 @login_required
 def processResponse(request, *args, **kwargs):
     # pk = kwargs.get('pk')
-    # data=json.loads(request.body)
     if request.user.is_authenticated:
+        data=json.loads(request.body)
+        branch = data['branch']
         staff = request.user.staff
+
         delivery, dispatched = Delivery.objects.get_or_create(
             staff=staff, dispatched=False)
         delivery.dispatched = True
+        delivery.toLocation=branch
         delivery.date_dispatched = datetime.datetime.now()
         delivery.fromLocation = request.user.staff.location
         # get toLocation
         delivery.save()
-    return redirect('assets:index')
+    return JsonResponse('Item was Added', safe=False)
+    # return redirect('assets:index')
 
 
 

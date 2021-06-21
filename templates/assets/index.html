@@ -69,7 +69,8 @@
                             <option class="form">{{b.name}}</option>
                             {% endfor %}
                         </datalist>
-                        <input autoComplete="on" list="branch" class="form-control" placeholder="TO:" /></td>
+                        <input id="branches" autoComplete="off" list="branch" class="form-control" placeholder="TO:" />
+                        </td>
                 </tr>
                 <tr>
                     <td>
@@ -131,9 +132,9 @@
             </tbody>
         </table>
         <h3>Dispatch button will print.</h3>
-        <a href="{% url 'assets:process_Response' %}">
-            <button id="dispatch-assets" type="submit" class="btn btn-primary btn-sm">Dispatch</button>
-        </a>
+        <button id="dispatch-assets" type="submit" class="btn btn-primary btn-sm">Dispatch</button>
+        <!-- <a href="{% url 'assets:process_Response' %}">
+        </a> -->
         {% else %}
         <div class="text-center btn-warning">
 
@@ -207,5 +208,30 @@
     </div>
 </div>
 
+<script>
+    document.getElementById('dispatch-assets').addEventListener('click',function(e){
+    submitBranch()
+    } )
 
+    function submitBranch(){
+    var branch=document.getElementById('branches').value
+    console.log('dispatch Button clicked', branch,)
+    //form data
+    //post the form data collected above
+    var url = '/assets/process_Response/' //where we are sending the data
+    fetch(url,{
+    method:'POST',
+    headers:{
+    'Content-Type':'application/json',
+    'X-CSRFToken': csrftoken,
+    },
+    body:JSON.stringify({'branch':branch})
+    })
+    .then((response)=>response.json())
+    .then((data)=> {
+    console.log('sucess:',data)
+    location.reload()
+    })
+    }
+</script>
 {% endblock content %}

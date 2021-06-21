@@ -76,8 +76,7 @@ class Delivery(models.Model):
     deliveryNo = models.CharField(max_length=200, null=True, blank=True)
     fromLocation = models.ForeignKey(
         Location, on_delete=models.CASCADE, null=True, blank=True)
-    toLocation = models.ForeignKey(
-        Location, on_delete=models.CASCADE, null=True, blank=True, related_name='ToLocation')
+    toLocation = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return self.deliveryNo

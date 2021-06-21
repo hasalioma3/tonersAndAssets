@@ -39,3 +39,7 @@ function updateDelivery(assetId, action){
         location.reload()
     })
 }
+
+
+
+
