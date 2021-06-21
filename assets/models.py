@@ -74,9 +74,10 @@ class Delivery(models.Model):
     date_dispatched = models.DateTimeField(auto_now_add=True)
     dispatched = models.BooleanField(default=False)
     deliveryNo = models.CharField(max_length=200, null=True, blank=True)
-    fromLocation = models.ForeignKey(
-        Location, on_delete=models.CASCADE, null=True, blank=True)
-    toLocation = models.CharField(max_length=200, null=True, blank=True)
+    fromLocation = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
+    # toLocation = models.ForeignKey(
+    #     Location, on_delete=models.CASCADE, null=True, blank=True, related_name="toLocation")
+    toLocation = models.CharField(max_length=200, null=False, blank=False)
 
     def __str__(self):
         return self.deliveryNo

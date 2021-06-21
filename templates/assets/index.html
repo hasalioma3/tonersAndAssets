@@ -7,15 +7,16 @@
 
         <h4>A list of assets in your Location</h4>
         <div>
-        <form class="form-inline">
-            <datalist id="assets">
-                {% for a in assets %}
-                <option data-a="{{a.id}}" data-action="add" class="update-delivery">{{a.barcode}}</option>
-                {% endfor %}
-            </datalist>
-            <input autoComplete="off" list="assets" class="form-control w-100" type="text" placeholder="Search" aria-label="Search" name="q" />
-        </form>
-        <hr />
+            <form class="form-inline">
+                <datalist id="assets">
+                    {% for a in assets %}
+                    <option data-a="{{a.id}}" data-action="add" class="update-delivery">{{a.barcode}}</option>
+                    {% endfor %}
+                </datalist>
+                <input autoComplete="off" list="assets" class="form-control w-100" type="text" placeholder="Search"
+                    aria-label="Search" name="q" />
+            </form>
+            <hr />
 
             <table class="table table-sm table-striped">
                 <thead>
@@ -29,16 +30,15 @@
                 {% for a in assets %}
                 <tbody>
                     <tr>
-                    
+
                         <td>{{forloop.counter}}</td>
                         <td>{{a.name}}</td>
                         <td>{{a.barcode}}</td>
                         <td>
-                            <button data-a="{{a.id}}" data-action="add"
-                                class="btn btn-sm btn-primary update-delivery">
+                            <button data-a="{{a.id}}" data-action="add" class="btn btn-sm btn-primary update-delivery">
                                 Add
                             </button>
-                            
+
                         </td>
                     </tr>
                 </tbody>
@@ -48,7 +48,7 @@
 
     </div>
     <div class="col-sm-6">
-        <table >
+        <table>
             <thead>
                 <tr>
                     <th width="200">
@@ -64,13 +64,17 @@
             <tbody>
                 <tr>
                     <td>From:{{staff.location}}</td>
-                    <td><datalist id="branch">
-                            {% for b in branch %}
-                            <option class="form">{{b.name}}</option>
-                            {% endfor %}
-                        </datalist>
-                        <input id="branches" autoComplete="off" list="branch" class="form-control" placeholder="TO:" />
-                        </td>
+                    <td>
+                        <form action="">
+                            <datalist id="branch">
+                                {% for b in branch %}
+                                <option class="form">{{b.name}}</option>
+                                {% endfor %}
+                            </datalist>
+                            <input id="branches" autoComplete="off" list="branch" class="form-control"
+                                placeholder="TO:" />
+                        </form>
+                    </td>
                 </tr>
                 <tr>
                     <td>
@@ -102,30 +106,28 @@
                     <td scope="row">{{a.asset}}</td>
                     <td>{{a.asset.barcode}}</td>
                     <td>
-                    {% if a.asset.accessory %}
-                     <button data-a="{{a.asset.id}}" data-action="remove"
-                                class="btn btn-sm update-delivery">
-                                -
-                            </button>  
-                     {{a.quantity}} 
-                     <button data-a="{{a.asset.id}}" data-action="add"
-                                class="btn btn-sm update-delivery">
-                                +
-                            </button>  
-                    
-                    {% else %}
-                    {{a.quantity}} 
-                    {% endif %}
-                      </td>
+                        {% if a.asset.accessory %}
+                        <button data-a="{{a.asset.id}}" data-action="remove" class="btn btn-sm update-delivery">
+                            -
+                        </button>
+                        {{a.quantity}}
+                        <button data-a="{{a.asset.id}}" data-action="add" class="btn btn-sm update-delivery">
+                            +
+                        </button>
+
+                        {% else %}
+                        {{a.quantity}}
+                        {% endif %}
+                    </td>
                     <td>{{a.delivery}}</td>
                     <td>
-                    {% if a.asset.accessory %}
-                    {% else %}
-                    <button data-a="{{a.asset.id}}" data-action="remove"
-                                class="btn btn-sm btn-primary mb-2 update-delivery">
-                                Remove
-                            </button>
-                            {% endif %}
+                        {% if a.asset.accessory %}
+                        {% else %}
+                        <button data-a="{{a.asset.id}}" data-action="remove"
+                            class="btn btn-sm btn-primary mb-2 update-delivery">
+                            Remove
+                        </button>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
@@ -209,29 +211,39 @@
 </div>
 
 <script>
-    document.getElementById('dispatch-assets').addEventListener('click',function(e){
-    submitBranch()
-    } )
+    document.getElementById('dispatch-assets').addEventListener('click', function (e) {
+        submitBranch()
+    })
 
-    function submitBranch(){
-    var branch=document.getElementById('branches').value
-    console.log('dispatch Button clicked', branch,)
-    //form data
-    //post the form data collected above
-    var url = '/assets/process_Response/' //where we are sending the data
-    fetch(url,{
-    method:'POST',
-    headers:{
-    'Content-Type':'application/json',
-    'X-CSRFToken': csrftoken,
-    },
-    body:JSON.stringify({'branch':branch})
-    })
-    .then((response)=>response.json())
-    .then((data)=> {
-    console.log('sucess:',data)
-    location.reload()
-    })
+    function submitBranch() {
+
+        var branch = document.getElementById('branches').value
+        if (branch == '') {
+            console.log('No Null ')
+            alert("Please select the Branch");
+        } else {
+            console.log('dispatch Button clicked', branch, )
+
+
+            //form data
+            //post the form data collected above
+            var url = '/assets/process_Response/' //where we are sending the data
+            fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: JSON.stringify({
+                        'branch': branch
+                    })
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log('sucess:', data)
+                    location.reload()
+                })
+        }
     }
 </script>
 {% endblock content %}
