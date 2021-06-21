@@ -1,0 +1,72 @@
+{% extends '../layout.html' %}
+
+{% load static %}
+{% block title %}
+
+{% endblock title %}
+{% block content %}
+
+<table class="table table-striped " >
+    <thead>
+        <tr>
+
+            <th scope="col">#</th>
+            <th scope="col">Delivery No</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+            <th scope="col">Dispatched?</th>
+            <th scope="col">Dispatched By</th>
+            <th scope="col">Print</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in pages %}
+        <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{a.deliveryNo}}</td>
+            <td>{{a.fromLocation}}</td>
+            <td>{{a.toLocation}}</td>
+            <td>{{a.dispatched}}</td>
+            <td>{{a.staff}}</td>
+            <td>
+                <a href="{% url 'assets:pdf' a.pk %}">
+                    <button class="btn btn-primary">Print</button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<hr>
+<nav aria-label="Page navigation example" style="margin:auto; width:50%;">
+    <ul class="pagination">
+        {% if pages.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1"><i class="fas fa-angle-double-left size:9x"></i>
+                First</a></li>
+        <li class="page-item "><a class="page-link" href="?page={{ pages.previous_page_number }}">Previous</a></li>
+        {% else %}
+        <li class="page-item disabled"><a class="page-link" href="#"></i> First</a></li>
+        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
+
+        {% endif %}
+
+        <span class="current">
+            <li class="page-item "><a class="page-link"> Page {{ pages.number }} of {{pages.paginator.num_pages }}. </a>
+            </li>
+        </span>
+
+
+        {% if pages.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ pages.next_page_number }}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ pages.paginator.num_pages }}">Last <i
+                    class="fas fa-angle-double-right"></i></a></li>
+        {% else %}
+        <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+        <li class="page-item disabled"><a class="page-link" href="#">Last <i class="fas fa-angle-double-right"></i></a>
+        </li>
+        {% endif %}
+
+    </ul>
+</nav>
+
+{% endblock content %}

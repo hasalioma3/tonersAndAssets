@@ -1,3 +1,24 @@
 {
+<<<<<<< HEAD
     "python.pythonPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\Python37_64\\python.exe"
+=======
+    "python.pythonPath": "env/bin/python",
+    "sqltools.connections": [
+        {
+            "mssqlOptions": {
+                "appName": "SQLTools",
+                "useUTC": true,
+                "encrypt": true
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 1433,
+            "askForPassword": true,
+            "driver": "MSSQL",
+            "name": "local",
+            "username": "sa",
+            "database": "test"
+        }
+    ]
+>>>>>>> c3512ed27ce83c18550c6ac8663eaca03ab24d01
 }
