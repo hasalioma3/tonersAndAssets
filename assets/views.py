@@ -135,6 +135,7 @@ def processResponse(request, *args, **kwargs):
             staff=staff, dispatched=False)
         delivery.dispatched = True
         delivery.toLocation=branch
+        # delivery.asset.location =branch
         delivery.date_dispatched = datetime.datetime.now()
         delivery.fromLocation = request.user.staff.location
         # get toLocation
