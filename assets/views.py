@@ -208,3 +208,6 @@ def deliveries_pdf(request, *args, **kwargs):
     if pisa_status.err:
         return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
+
+#create a view to issue an asset to a User
+# 1. select User,dept,Asset and Issue.. Create table to maintain Asset Issues.
