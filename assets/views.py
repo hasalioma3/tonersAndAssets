@@ -60,17 +60,20 @@ def assets(request):
         delivery.deliveryNo = 'DEL-' + delivery.key1
         delivery.save()
         deliveryitems = delivery.get_delivery_items_no
-
+        acc = Asset.objects.filter(accessory=True)
         # deliveryItem2, dispatched = DeliveryAsset.objects.filter()
         deliveryitemsss = delivery.deliveryasset_set.all()
         # Search Assets
         url_parameter = request.GET.get("q")
+        
         if url_parameter: 
+            
             assets = Asset.objects.filter(
                 barcode__icontains= url_parameter,
-                location=request.user.staff.location, 
+                location=request.user.staff.location,
                 transit=False
                 )
+        
         else:
             assets = Asset.objects.filter(
                 location=request.user.staff.location, transit=False)

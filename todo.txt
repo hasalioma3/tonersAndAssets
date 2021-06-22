@@ -8,14 +8,14 @@ Add regular Authentication.(done)
 
 >add Assets transactions(repair)(pending)
     ADD NEW ASSETS TO DNOTE(done)
-    ADD NEW TO BRANCH(PENDING)
-    remove from delivery notes(subtract)!!!
-    search asset list for dispatch(next)
-    paginate asset list
+    ADD NEW TO BRANCH(done)
+    remove from delivery notes(done)!!!
+    search asset list for dispatch(done)
+    paginate asset list(pending)
     Set in transit status(dONE)//only assets not in transit will appear in the list
     Staff will only see assets in their location.(DONE)
     disable button for asset already added to delivery(DONE).
-    accessories will still appear in the list to change qty(pending)
+    accessories will still appear in the list to change qty(done)
     dispatched date will update to when the dispatch button was clicked.(done)
     if it's an accessory have others category with a discription editable.(pending)
     Assets can be uploaded from excel and check duplicates.

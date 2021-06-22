@@ -220,7 +220,12 @@
         var branch = document.getElementById('branches').value
         if (branch == '') {
             console.log('No Null ')
-            alert("Please select the Branch");
+            Swal.fire({
+                title: 'Error!',
+                text: 'No Branch Selected',
+                icon: 'error',
+                confirmButtonText: 'Cool'
+            })
         } else {
             console.log('dispatch Button clicked', branch, )
 
@@ -241,7 +246,34 @@
                 .then((response) => response.json())
                 .then((data) => {
                     console.log('sucess:', data)
-                    location.reload()
+                    const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })
+
+                    Toast.fire({
+                    icon: 'success',
+                    title: 'Dispatched successfully !!!'
+                    })
+                    
+                        $(document).ready(function() {
+                        setInterval(function() {
+                        cache_clear()
+                        }, 2000);
+                        });
+                        function cache_clear() {
+                        window.location.reload(true);
+                        // window.location.reload(); use this if you do not remove cache
+                        }
+
+                    // location.reload(timer: 3000)
                 })
         }
     }
