@@ -21,7 +21,7 @@ Add regular Authentication.(done)
     Assets can be uploaded from excel and check duplicates.
 >Deliveries 
     Pagination(done)
-
+>Receive assets(Pending)
 >Print directly with dispatch button(pending)
 
         module to assign assets(pending)!!!

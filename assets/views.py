@@ -23,7 +23,7 @@ from allauth.account.decorators import login_required
 
 # My Models
 from .models import DeliveryAsset, Asset, Delivery, Location, Logo
-
+from .forms import AssetForm
 
 @login_required
 def deliveries(request):
@@ -54,7 +54,7 @@ def assets(request):
         paginator = Paginator(deliveryList, 5)
         page_number = request.GET.get('page')
         pages = paginator.get_page(page_number)
-
+       
         # currentDelivery=delivery.deliveryNo
         asset = delivery.deliveryasset_set.all()
         delivery.deliveryNo = 'DEL-' + delivery.key1
@@ -67,18 +67,27 @@ def assets(request):
         url_parameter = request.GET.get("q")
         
         if url_parameter: 
-            
             assets = Asset.objects.filter(
                 barcode__icontains= url_parameter,
                 location=request.user.staff.location,
                 transit=False
                 )
-        
         else:
-            assets = Asset.objects.filter(
-                location=request.user.staff.location, transit=False)
-
+            assets = Asset.objects.filter(location=request.user.staff.location, transit=False) | Asset.objects.filter(accessory=True)
+            
+    form =AssetForm()
+    if request.method =="POST":
+        form=AssetForm(request.POST)
+        if form.is_valid():
+            fs=form.save(commit =False)
+            if  fs.category == 3:
+                fs.accessory = True
+            fs.save()
+            return redirect('/assets')
+        else: 
+            return(HttpResponse("An error occurred"))
     context = {
+        'form':form,
         'pages': pages,
         'branch': branch,
         'delivery': delivery,
