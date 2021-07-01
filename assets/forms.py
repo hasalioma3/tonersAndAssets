@@ -6,7 +6,7 @@ from .models import *
 class AssetForm(forms.ModelForm):
     class Meta:
         model = Asset
-        fields = ('category', 'name', 'barcode', 'serialNumber')
+        fields = ('category', 'name', 'barcode', 'serialNumber','accessory')
 
 
 

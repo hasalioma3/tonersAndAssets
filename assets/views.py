@@ -80,8 +80,7 @@ def assets(request):
         form=AssetForm(request.POST)
         if form.is_valid():
             fs=form.save(commit =False)
-            if  fs.category == 3:
-                fs.accessory = True
+            fs.location= request.user.staff.location
             fs.save()
             return redirect('/assets')
         else: 
@@ -220,3 +219,5 @@ def deliveries_pdf(request, *args, **kwargs):
 
 #create a view to issue an asset to a User
 # 1. select User,dept,Asset and Issue.. Create table to maintain Asset Issues.
+
+#Create View to receive Asset
