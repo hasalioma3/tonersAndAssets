@@ -24,6 +24,6 @@ Add regular Authentication.(done)
 >Receive assets(Pending)
 >Print directly with dispatch button(pending)
 >module to assign assets(pending)!!!
-
+>update asset location after dispatch(pending)
 New View to assign Users Laptops/bags/external hdd/wireless Mouse/.(Pending)
     >Pick users from AD.

@@ -140,17 +140,32 @@ def processResponse(request, *args, **kwargs):
     if request.user.is_authenticated:
         data=json.loads(request.body)
         branch = data['branch']
+        loc=Location.objects.get(pk=branch)
+
+        # asset =Delivery.get_delivery_assets()
         staff = request.user.staff
 
         delivery, dispatched = Delivery.objects.get_or_create(
             staff=staff, dispatched=False)
+        # deliveryitemsss = delivery.deliveryasset_set.all()
+        # deliveryitemsss = delivery.deliveryasset_set.all()
+        # deliveryItem, dispatched = DeliveryAsset.objects.get_or_create(
+        # delivery=delivery, asset=deliveryitemsss)
+
+        # x = Asset.objects.get(pk=deliveryitemsss)
+        # deliveryItem = DeliveryAsset.objects.get(
+        # delivery=delivery)
+
         delivery.dispatched = True
-        delivery.toLocation=branch
-        # delivery.asset.location =branch
+        delivery.toLocation=loc
         delivery.date_dispatched = datetime.datetime.now()
         delivery.fromLocation = request.user.staff.location
+
         # get toLocation
+        
         delivery.save()
+        # x.location =loc
+        # x.save()
     return JsonResponse('Item was Added', safe=False)
     # return redirect('assets:index')
 

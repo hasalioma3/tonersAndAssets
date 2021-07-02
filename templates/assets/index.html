@@ -5,42 +5,42 @@
 {% block content %}
 <div class="row">
     <div class="col-sm-6">
-            <!-- Button trigger modal -->
-            {% if  user.is_superuser %}
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AssetModal">
-                Add Asset
-            </button>
-            
-            {% else %}
-            {% endif %}
+        <!-- Button trigger modal -->
+        {% if  user.is_superuser %}
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AssetModal">
+            Add Asset
+        </button>
 
-            <!-- Modal -->
-            <div class="modal fade" id="AssetModal" tabindex="-1" role="dialog" aria-labelledby="AssetModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="AssetModalLabel">Create New Asset</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                            <form action="" method="POST">
+        {% else %}
+        {% endif %}
+
+        <!-- Modal -->
+        <div class="modal fade" id="AssetModal" tabindex="-1" role="dialog" aria-labelledby="AssetModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="AssetModalLabel">Create New Asset</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="" method="POST">
                         <div class="modal-body">
-                                {% csrf_token %}
-                                {{ form|crispy}}
+                            {% csrf_token %}
+                            {{ form|crispy}}
 
                         </div>
                         <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
-                            </form>
-                    </div>
+                    </form>
                 </div>
             </div>
+        </div>
 
-            <!--End Modal-->
+        <!--End Modal-->
         <h4>A list of assets in your Location</h4>
         <div>
             <form class="form-inline">
@@ -102,13 +102,21 @@
                     <td>From:{{staff.location}}</td>
                     <td>
                         <form action="">
-                            <datalist id="branch">
+                            <!-- <datalist id="branch">
                                 {% for b in branch %}
-                                <option class="form">{{b.name}}</option>
+                                <option value={{b.id}} class="form">{{b.name}}</option>
                                 {% endfor %}
                             </datalist>
                             <input id="branches" autoComplete="off" list="branch" class="form-control"
-                                placeholder="TO:" />
+                                placeholder="TO:" />  -->
+                        
+                            <select name="branches" id="branches" class="form-control a">
+                               
+                                <option value='' >--- Select a Branch ---</option>
+                                {% for b in branch %}
+                                <option value={{b.id}} >{{b.name}}</option>
+                                {% endfor %}
+                            </select>
                         </form>
                     </td>
                 </tr>
@@ -130,6 +138,7 @@
                     <th>#</th>
                     <th>ASSET</th>
                     <th>BARCODE</th>
+                    <th>LOCATION</th>
                     <th>QUANTITY</th>
                     <th>DELIVERY</th>
                     <th>Action</th>
@@ -141,6 +150,7 @@
                     <td scope="row">{{forloop.counter}}</td>
                     <td scope="row">{{a.asset}}</td>
                     <td>{{a.asset.barcode}}</td>
+                    <td>{{a.asset.location}}</td>
                     <td>
                         {% if a.asset.accessory %}
                         <button data-a="{{a.asset.id}}" data-action="remove" class="btn btn-sm update-delivery">
@@ -252,8 +262,9 @@
     })
 
     function submitBranch() {
-
+       
         var branch = document.getElementById('branches').value
+        var intbranch = Number(branch)
         if (branch == '') {
             console.log('No Null ')
             Swal.fire({
@@ -276,38 +287,39 @@
                         'X-CSRFToken': csrftoken,
                     },
                     body: JSON.stringify({
-                        'branch': branch
+                        'branch': intbranch
                     })
                 })
                 .then((response) => response.json())
                 .then((data) => {
                     console.log('sucess:', data)
                     const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 2000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
                     })
 
                     Toast.fire({
-                    icon: 'success',
-                    title: 'Dispatched successfully !!!'
+                        icon: 'success',
+                        title: 'Dispatched successfully !!!'
                     })
-                    
-                        $(document).ready(function() {
-                        setInterval(function() {
-                        cache_clear()
+
+                    $(document).ready(function () {
+                        setInterval(function () {
+                            cache_clear()
                         }, 2000);
-                        });
-                        function cache_clear() {
+                    });
+
+                    function cache_clear() {
                         window.location.reload(true);
                         // window.location.reload(); use this if you do not remove cache
-                        }
+                    }
 
                     // location.reload(timer: 3000)
                 })
