@@ -15,10 +15,10 @@ Add regular Authentication.(done)
     dispatched date will update to when the dispatch button was clicked.(done)
 >Deliveries 
     Pagination(done)
-
-
+    paginate asset list(done)
+    
+>issue assets to a user(next)
 >add Assets transactions(repair)(pending)
-    paginate asset list(pending)
     if it's an accessory have others category with a discription editable.(pending)
     Assets can be uploaded from excel and check duplicates.(pending)
 >Receive assets(Pending)
