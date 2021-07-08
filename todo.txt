@@ -18,12 +18,14 @@ Add regular Authentication.(done)
     paginate asset list(done)
     
 >issue assets to a user(next)
+>Receive assets(Pending)
+>update asset location after dispatch(pending)
+
+
 >add Assets transactions(repair)(pending)
     if it's an accessory have others category with a discription editable.(pending)
     Assets can be uploaded from excel and check duplicates.(pending)
->Receive assets(Pending)
 >Print directly with dispatch button(pending)
 >module to assign assets(pending)!!!
->update asset location after dispatch(pending)
 New View to assign Users Laptops/bags/external hdd/wireless Mouse/.(Pending)
     >Pick users from AD.

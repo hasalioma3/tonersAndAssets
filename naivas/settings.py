@@ -33,7 +33,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'django_python3_ldap',
-    'assets'
+    'assets',
+    'asset_trans'
  
 ]
 

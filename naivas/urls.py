@@ -10,4 +10,5 @@ urlpatterns = [
     path('laptops/', include('laptop.urls'), name='laptops'),
     path('accounts/', include('allauth.urls')),
     path('assets/', include('assets.urls'), name='assets'),
+    path('asset_trans/', include('asset_trans.urls'), name='asset_trans'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
