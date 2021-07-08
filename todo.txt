@@ -17,7 +17,9 @@ Add regular Authentication.(done)
     Pagination(done)
     paginate asset list(done)
     
->issue assets to a user(next)
+>issue Laptop to a user(next)
+    -Maintain Laptop Table separately
+    -
 >Receive assets(Pending)
 >update asset location after dispatch(pending)
 

@@ -25,6 +25,7 @@ from allauth.account.decorators import login_required
 from .models import DeliveryAsset, Asset, Delivery, Location, Logo
 from .forms import AssetForm
 
+
 @login_required
 def deliveries(request):
     if request.user.is_authenticated:
@@ -54,7 +55,7 @@ def assets(request):
         paginator = Paginator(deliveryList, 5)
         page_number = request.GET.get('page')
         pages = paginator.get_page(page_number)
-       
+
         # currentDelivery=delivery.deliveryNo
         asset = delivery.deliveryasset_set.all()
         delivery.deliveryNo = 'DEL-' + delivery.key1
@@ -65,28 +66,29 @@ def assets(request):
         deliveryitemsss = delivery.deliveryasset_set.all()
         # Search Assets
         url_parameter = request.GET.get("q")
-        
-        if url_parameter: 
+
+        if url_parameter:
             assets = Asset.objects.filter(
-                barcode__icontains= url_parameter,
+                barcode__icontains=url_parameter,
                 location=request.user.staff.location,
                 transit=False
-                )
+            )
         else:
-            assets = Asset.objects.filter(location=request.user.staff.location, transit=False) | Asset.objects.filter(accessory=True)
-            
-    form =AssetForm()
-    if request.method =="POST":
-        form=AssetForm(request.POST)
+            assets = Asset.objects.filter(
+                location=request.user.staff.location, transit=False) | Asset.objects.filter(accessory=True)
+
+    form = AssetForm()
+    if request.method == "POST":
+        form = AssetForm(request.POST)
         if form.is_valid():
-            fs=form.save(commit =False)
-            fs.location= request.user.staff.location
+            fs = form.save(commit=False)
+            fs.location = request.user.staff.location
             fs.save()
             return redirect('/assets')
-        else: 
+        else:
             return(HttpResponse("An error occurred"))
     context = {
-        'form':form,
+        'form': form,
         'pages': pages,
         'branch': branch,
         'delivery': delivery,
@@ -119,12 +121,12 @@ def updateAsset(request):
         deliveryItem.quantity = (deliveryItem.quantity + 1)
         if asset.accessory != True:
             asset.transit = True
-         
+
     elif action == 'remove':
         deliveryItem.quantity = (deliveryItem.quantity - 1)
     deliveryItem.save()
     asset.save()
-     
+
     if deliveryItem.quantity <= 0:
         deliveryItem.delete()
         asset.transit = False
@@ -138,9 +140,9 @@ def updateAsset(request):
 def processResponse(request, *args, **kwargs):
     # pk = kwargs.get('pk')
     if request.user.is_authenticated:
-        data=json.loads(request.body)
+        data = json.loads(request.body)
         branch = data['branch']
-        loc=Location.objects.get(pk=branch)
+        loc = Location.objects.get(pk=branch)
 
         # asset =Delivery.get_delivery_assets()
         staff = request.user.staff
@@ -157,12 +159,12 @@ def processResponse(request, *args, **kwargs):
         # delivery=delivery)
 
         delivery.dispatched = True
-        delivery.toLocation=loc
+        delivery.toLocation = loc
         delivery.date_dispatched = datetime.datetime.now()
         delivery.fromLocation = request.user.staff.location
 
         # get toLocation
-        
+
         delivery.save()
         # x.location =loc
         # x.save()
@@ -170,7 +172,7 @@ def processResponse(request, *args, **kwargs):
     # return redirect('assets:index')
 
 
-
+@login_required
 def link_callback(uri, rel):
     """
     Convert HTML URIs to absolute system paths so xhtml2pdf can access those
@@ -204,7 +206,7 @@ def link_callback(uri, rel):
     return path
 
 
-
+@login_required
 def deliveries_pdf(request, *args, **kwargs):
     pk = kwargs.get('pk')
     if request.user.is_authenticated:
@@ -232,7 +234,7 @@ def deliveries_pdf(request, *args, **kwargs):
         return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
 
-#create a view to issue an asset to a User
+# create a view to issue an asset to a User
 # 1. select User,dept,Asset and Issue.. Create table to maintain Asset Issues.
 
-#Create View to receive Asset
+# Create View to receive Asset
