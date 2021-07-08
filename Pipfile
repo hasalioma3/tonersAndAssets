@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+django-allauth = "*"
+django-crispy-forms = "*"
+ldap3 = "==2.9"
+pillow = "*"
+whitenoise = "*"
+xhtml2pdf = "*"
+django-python3-ldap = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
