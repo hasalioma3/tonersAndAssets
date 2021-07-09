@@ -14,7 +14,7 @@
         {% else %}
         {% endif %}
 
-        <!-- Modal -->
+        <!-- Modal Asset -->
         <div class="modal fade" id="AssetModal" tabindex="-1" role="dialog" aria-labelledby="AssetModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -29,6 +29,42 @@
                         <div class="modal-body">
                             {% csrf_token %}
                             {{ form|crispy}}
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!--End Modal-->
+        <!-- Button trigger modal -->
+        {% if  user.is_superuser %}
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CategoryModal">
+            Add Category
+        </button>
+
+        {% else %}
+        {% endif %}
+        
+        <!-- Modal Category -->
+        <div class="modal fade" id="CategoryModal" tabindex="-1" role="dialog" aria-labelledby="CategoryModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="CategoryModalLabel">Create New Category</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="" method="POST">
+                        <div class="modal-body">
+                            {% csrf_token %}
+                            {{ cat_form|crispy}}
 
                         </div>
                         <div class="modal-footer">

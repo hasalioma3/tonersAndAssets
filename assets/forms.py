@@ -10,3 +10,10 @@ class AssetForm(forms.ModelForm):
 
 
 
+class CatForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ('name',)
+
+
+
