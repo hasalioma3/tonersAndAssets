@@ -1,12 +1,11 @@
 from django import forms
 from django.forms import ModelForm
 
-from .models import Laptop,Laptopmodel, Department
+from .models import Laptop_trans, Department
+from assets.models import Asset
 
-class LaptopmodelForm(forms.ModelForm):
-    class Meta:
-        model = Laptopmodel
-        fields = ('__all__')
+
+
 
 class DepartmentForm(forms.ModelForm):
     class Meta:
@@ -16,8 +15,7 @@ class DepartmentForm(forms.ModelForm):
 
 class LaptopForm(forms.ModelForm):
     class Meta:
-        model = Laptop
+        model = Laptop_trans
         department = forms.ModelChoiceField(queryset=Department.objects.all())
-        laptopmodel = forms.ModelChoiceField(queryset=Laptopmodel.objects.all())
-        fields = ('department', 'laptopmodel', 'user', 'serialno', 'barcode')
-
+        laptop = forms.ModelChoiceField(queryset=Asset.objects.filter(category=111))
+        fields = ('department', 'user', 'laptop', )

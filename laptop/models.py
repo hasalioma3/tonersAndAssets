@@ -1,36 +1,30 @@
 from django.db import models
 import datetime
 from django.utils import timezone
+from django.contrib.auth.models import User
+from assets.models import Asset
 # Create your models here.
+
+
 class Department(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
     class Meta:
-        verbose_name_plural ="Departments"
+        verbose_name_plural = "Departments"
 
     def __str__(self):
         return self.name
 
-class Laptopmodel(models.Model):
-    name = models.CharField(max_length=100, unique=True)
 
-    class Meta:
-        verbose_name_plural ="Laptopmodels"
-
-    def __str__(self):
-        return self.name
-
-class Laptop(models.Model):
+class Laptop_trans(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    laptopmodel = models.ForeignKey(Laptopmodel, on_delete=models.CASCADE)
-    user = models.CharField(max_length=100, unique=True)
-    serialno = models.CharField(max_length=100, unique=True)
-    barcode = models.CharField(max_length=100, unique=True)
-    created_on = models.DateTimeField(default=timezone.now)
-    
+    user = models.OneToOneField(User, on_delete=models.PROTECT)
+    laptop = models.OneToOneField(
+        Asset, on_delete=models.PROTECT)
+    created_on = models.DateTimeField(auto_now=True)
+
     class Meta:
-        verbose_name_plural ="Laptops"
+        verbose_name_plural = "Laptops"
 
     def __str__(self):
         return self.user
-

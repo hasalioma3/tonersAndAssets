@@ -7,9 +7,9 @@ Laptops {% endblock title %} {% block content %}
 
   <h1 class="text-center"> LAPTOPS </h1>
   <div class="row" >
-  {% if user.is_authenticated %}
   
     <div class="col-sm-4">
+      {% if user.is_authenticated %}
       <h3 class="text-center">Issue a Laptop</h3>
       <hr>
       <form action="" method="POST">
@@ -19,17 +19,12 @@ Laptops {% endblock title %} {% block content %}
       <hr>
       <hr>
       <hr>
-
-      {% if user.is_superuser %}
-      <h2>Create a New Laptop Model</h2>
-      <form action="" method="POST">
-        {% csrf_token %} {{form2|crispy}}
-        <input type="submit" value="Submit" class="btn btn-sm btn-info" />
-      </form>
+      {% else %}
+      <p>Please Log in</p>
       {% endif %}
     </div>
   
-  {% endif  %}
+
 
   <div class="col-sm-8" id="replaceable-content">
       <h3 class="text-center">List of Laptops Dispatched</h3>
@@ -40,8 +35,7 @@ Laptops {% endblock title %} {% block content %}
         <tr>
           <th>Department</th>
           <th>User</th>
-          <th>Model</th>
-          <th>serialno</th>
+          <th>Laptop</th>
           <th>barcode</th>
           <th>Date Sent</th>
           <th>Time Since</th>
@@ -50,9 +44,8 @@ Laptops {% endblock title %} {% block content %}
         <tr>
           <td>{{laptop.department}}</td>
           <td>{{laptop.user}}</td>
-          <td>{{laptop.laptopmodel}}</td>
-          <td>{{laptop.serialno}}</td>
-          <td>{{laptop.barcode}}</td>
+          <td>{{laptop.laptop.name}}</td>
+          <td>{{laptop.laptop.barcode}}</td>
           <td>{{laptop.created_on}}</td>
           <td>{{laptop.created_on|timesince }}</td>
         </tr>
@@ -96,6 +89,7 @@ Laptops {% endblock title %} {% block content %}
       {% endif %}
 
     </div>
+  </div>
   </div>
 </div>
 {% endblock content %}
