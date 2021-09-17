@@ -34,7 +34,8 @@ INSTALLED_APPS = [
 
     'apps.toners',
     'apps.assets',
-    'apps.asset_trans'
+    'apps.asset_trans',
+    'apps.repair'
  
 ]
 

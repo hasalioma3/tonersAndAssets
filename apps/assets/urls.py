@@ -7,6 +7,6 @@ urlpatterns=[
     path('update_assets/',views.updateAsset, name='update_assets'),
     path('deliveries/',views.deliveries, name='deliveries'),
     path('process_Response/',views.processResponse, name='process_Response'),
-    path('pdf/<pk>',views.deliveries_pdf, name='pdf'),
+    path('pdfs/<pk>', views.renderPDF, name='pdfs'),
  
 ]

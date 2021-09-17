@@ -1,3 +1,5 @@
+from easy_pdf.rendering import render_to_pdf_response
+from easy_pdf.views import PDFTemplateView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.staticfiles import finders
@@ -5,7 +7,7 @@ from django.conf import settings
 from django.conf.urls import url
 from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from django.template.loader import get_template
 from django.db.models import Q
 
@@ -13,11 +15,12 @@ from django.db.models import Q
 import json
 import datetime
 import os
+import io
 from os import name, truncate
 
 # render to pdf
 from xhtml2pdf import pisa
-
+from reportlab.pdfgen import canvas
 # Account
 from allauth.account.decorators import login_required
 
@@ -174,44 +177,11 @@ def processResponse(request, *args, **kwargs):
     return JsonResponse('Item was Added', safe=False)
     # return redirect('assets:index')
 
-
-@login_required
-def link_callback(uri, rel):
-    """
-    Convert HTML URIs to absolute system paths so xhtml2pdf can access those
-    resources
-    """
-    result = finders.find(uri)
-    if result:
-        if not isinstance(result, (list, tuple)):
-            result = [result]
-        result = list(os.path.realpath(path) for path in result)
-        path = result[0]
-    else:
-        sUrl = settings.STATIC_URL        # Typically /static/
-        sRoot = settings.STATIC_ROOT      # Typically /home/userX/project_static/
-        mUrl = settings.MEDIA_URL         # Typically /media/
-        mRoot = settings.MEDIA_ROOT       # Typically /home/userX/project_static/media/
-
-        if uri.startswith(mUrl):
-            path = os.path.join(mRoot, uri.replace(mUrl, ""))
-        elif uri.startswith(sUrl):
-            path = os.path.join(sRoot, uri.replace(sUrl, ""))
-        else:
-            return uri
-
-    # make sure that file exists
-    if not os.path.isfile(path):
-        raise Exception(
-            'media URI must start with %s or %s' % (sUrl, mUrl)
-        )
-    print(path)
-    return path
-
-
-@login_required
-def deliveries_pdf(request, *args, **kwargs):
+def renderPDF(request, *args, **kwargs):
     pk = kwargs.get('pk')
+    template = 'assets/delivery.html'
+    filename = 'DEL-' + pk.zfill(6)
+    download_filename= "%s.pdf" %(filename)
     if request.user.is_authenticated:
         staff = request.user.staff
         delivery = Delivery.objects.filter(staff=staff, dispatched=True, pk=pk)
@@ -220,22 +190,7 @@ def deliveries_pdf(request, *args, **kwargs):
             'delivery': delivery,
             'logo': logo
         }
-        template_path = 'assets/delivery.html'
-        response = HttpResponse(content_type='application/pdf')
-
-        filename = 'DEL-' + pk.zfill(6)
-        response['Content-Disposition'] = "filename=%s.pdf" % (filename)
-        # response['Content-Disposition']="filename=ali.pdf"
-        template = get_template(template_path)
-        html = template.render(context)
-
-    # create pdf
-    pisa_status = pisa.CreatePDF(
-        html, dest=response,  link_callback=link_callback
-    )
-    if pisa_status.err:
-        return HttpResponse('We had some errors <pre>' + html + '</pre>')
-    return response
+    return render_to_pdf_response(request,template,context)
 
 # create a view to issue an asset to a User
 # 1. select User,dept,Asset and Issue.. Create table to maintain Asset Issues.

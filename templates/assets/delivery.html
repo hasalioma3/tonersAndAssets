@@ -1,4 +1,6 @@
 {% load static %}
+{% comment %} {% load img_to_base64 %} {% endcomment %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -103,8 +105,7 @@
         <table>
             <tr>
                 <td>
-                    <img src={% static 'img/logo.png' %} alt="image" height="70" />
-                    
+                    <img src="{{logo.logo.path}}" alt="image" height="70"> 
                 </td>
                 <td>
                     <h1><u class="f l">DELIVERY NOTE</u></h1>
