@@ -25,15 +25,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'toners',
     'crispy_forms',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'django_python3_ldap',
-    'assets',
-    'asset_trans'
+
+    'apps.toners',
+    'apps.assets',
+    'apps.asset_trans'
  
 ]
 
