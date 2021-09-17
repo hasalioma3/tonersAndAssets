@@ -23,7 +23,7 @@ from allauth.account.decorators import login_required
 
 # My Models
 from .models import DeliveryAsset, Asset, Delivery, Location, Logo
-from .forms import AssetForm,CatForm
+from .forms import AssetForm
 
 
 @login_required
@@ -78,10 +78,8 @@ def assets(request):
                 location=request.user.staff.location, transit=False) | Asset.objects.filter(accessory=True)
 
     form = AssetForm()
-    cat_form =CatForm()
     if request.method == "POST":
         form = AssetForm(request.POST)
-        cat_form = CatForm(request.POST)
         if form.is_valid():
             fs = form.save(commit=False)
             fs.location = request.user.staff.location
@@ -90,10 +88,9 @@ def assets(request):
         
         else:
             return(HttpResponse("An error occurred"))
-        cat_form.save()
+        
         return redirect('/assets')
     context = {
-        'cat_form': cat_form,
         'form': form,
         'pages': pages,
         'branch': branch,

@@ -6,14 +6,4 @@ from .models import *
 class AssetForm(forms.ModelForm):
     class Meta:
         model = Asset
-        fields = ('category', 'name', 'barcode', 'serialNumber','accessory')
-
-
-
-class CatForm(forms.ModelForm):
-    class Meta:
-        model = Category
-        fields = ('name',)
-
-
-
+        fields = ('name', 'barcode', 'serialNumber','accessory')

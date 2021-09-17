@@ -50,9 +50,7 @@
 
       <ul class="navbar-nav mr-auto">
       {% if user.is_authenticated  %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'laptops' %}">Laptops</a>
-        </li>
+        
         <li class="nav-item">
           <a class="nav-link" href="{% url 'assets:index' %}">Assets</a>
         </li>

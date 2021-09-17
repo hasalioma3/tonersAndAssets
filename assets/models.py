@@ -36,11 +36,11 @@ class Staff(models.Model):
         return str(self.user)
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=200, null=True, blank=True)
+# class Category(models.Model):
+#     name = models.CharField(max_length=200, null=True, blank=True)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 
 class Logo(models.Model):
@@ -48,8 +48,8 @@ class Logo(models.Model):
 
 
 class Asset(models.Model):
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, null=True, blank=True)
+    # category = models.ForeignKey(
+    #     Category, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=200, null=True, blank=True)
     barcode = models.CharField(max_length=200, null=True, blank=True,)
     serialNumber = models.CharField(max_length=200, null=True, blank=True)

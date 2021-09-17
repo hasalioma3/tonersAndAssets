@@ -26,7 +26,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'toners',
-    'laptop',
     'crispy_forms',
     'django.contrib.sites',
     'allauth',
