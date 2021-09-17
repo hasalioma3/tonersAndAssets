@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
-from assets.models import Asset, Staff
+from apps.assets.models import Asset, Staff
 
 # link assets to Users
 

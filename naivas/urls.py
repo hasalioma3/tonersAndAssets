@@ -6,8 +6,8 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('toners.urls')),
+    path('', include('apps.toners.urls')),
     path('accounts/', include('allauth.urls')),
-    path('assets/', include('assets.urls'), name='assets'),
-    path('asset_trans/', include('asset_trans.urls'), name='asset_trans'),
+    path('assets/', include('apps.assets.urls'), name='assets'),
+    path('asset_trans/', include('apps.asset_trans.urls'), name='asset_trans'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

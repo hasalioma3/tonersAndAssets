@@ -18,11 +18,10 @@ Add regular Authentication.(done)
     paginate asset list(done)
     
 >issue Laptop to a user(next)
-    -Maintain Laptop Table separately
+    -Maintain Assets Table separately
     -
->Receive assets(Pending)
+>Receive assets(Pending) //work on this ASAP
 >update asset location after dispatch(pending)
-
 
 >add Assets transactions(repair)(pending)
     if it's an accessory have others category with a discription editable.(pending)
