@@ -7,6 +7,12 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
+class Vendor(models.Model):
+    name = models.CharField(max_length=200, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 class Staff(models.Model):
     user = models.OneToOneField(
@@ -31,8 +37,7 @@ class Asset(models.Model):
     barcode = models.CharField(max_length=200, null=True, blank=True,)
     serialNumber = models.CharField(max_length=200, null=True, blank=True)
     accessory = models.BooleanField(default=False)
-    location = models.ForeignKey(
-        Location, on_delete=models.CASCADE, null=True, blank=True)
+    location = models.CharField(max_length=200, null=True, blank=True)
     transit = models.BooleanField(default=False)
 
     def __str__(self):
@@ -48,6 +53,9 @@ class Delivery(models.Model):
     fromLocation = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
     toLocation = models.ForeignKey(
         Location, on_delete=models.CASCADE, null=True, blank=True, related_name="toLocation")
+    vendor = models.ForeignKey(
+        Vendor, on_delete=models.CASCADE, null=True, blank=True, related_name="toLocation")
+    
     # toLocation = models.CharField(max_length=200, null=False, blank=False)
 
     def __str__(self):
@@ -69,6 +77,7 @@ class Delivery(models.Model):
 
 
 class DeliveryAsset(models.Model):
+    
     asset = models.ForeignKey(
         Asset, on_delete=models.CASCADE, null=True, blank=True)
     delivery = models.ForeignKey(

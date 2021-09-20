@@ -1,0 +1,4 @@
+select assets from the Assets Apps(done)
+dispatch to a vendor (done)
+print delivery note.(done)
+receive back from the vendor>> figure out the mechanism.(update transit status and location.)

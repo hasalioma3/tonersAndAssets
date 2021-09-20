@@ -25,7 +25,7 @@ from reportlab.pdfgen import canvas
 from allauth.account.decorators import login_required
 
 # My Models
-from .models import DeliveryAsset, Asset, Delivery, Location, Logo
+from .models import Vendor, DeliveryAsset, Asset, Delivery, Location, Logo
 from .forms import AssetForm
 
 
@@ -48,7 +48,10 @@ def deliveries(request):
 @login_required
 def assets(request):
     if request.user.is_authenticated:
+        # place a checkbox to toggle internal transfer vs external transfer.
+        
         branch = Location.objects.all()
+        vendor = Vendor.objects.all()
         staff = request.user.staff
         delivery, dispatched = Delivery.objects.get_or_create(
             staff=staff, dispatched=False)
@@ -97,6 +100,7 @@ def assets(request):
         'form': form,
         'pages': pages,
         'branch': branch,
+        'vendor':vendor,
         'delivery': delivery,
         'staff': staff,
         'deliveryList': deliveryList,
@@ -114,8 +118,11 @@ def updateAsset(request):
     data = json.loads(request.body)
     assetId = data['assetId']
     action = data['action']
+    action = data['vendor']
+
     print('Action:', action)
     print('Product:', assetId)
+    print('vendor:', vendor)
     staff = request.user.staff
     asset = Asset.objects.get(id=assetId)
     delivery, dispatched = Delivery.objects.get_or_create(
@@ -127,9 +134,10 @@ def updateAsset(request):
         deliveryItem.quantity = (deliveryItem.quantity + 1)
         if asset.accessory != True:
             asset.transit = True
-
+        asset.location = 'Comnet'
     elif action == 'remove':
         deliveryItem.quantity = (deliveryItem.quantity - 1)
+        asset.location = staff.location.name
     deliveryItem.save()
     asset.save()
 
@@ -147,25 +155,20 @@ def processResponse(request, *args, **kwargs):
     # pk = kwargs.get('pk')
     if request.user.is_authenticated:
         data = json.loads(request.body)
-        branch = data['branch']
-        loc = Location.objects.get(pk=branch)
+        vendorId = data['vendor']
+        vendor = Vendor.objects.get(pk=vendorId)
 
-        # asset =Delivery.get_delivery_assets()
         staff = request.user.staff
-
         delivery, dispatched = Delivery.objects.get_or_create(
             staff=staff, dispatched=False)
-        # deliveryitemsss = delivery.deliveryasset_set.all()
-        # deliveryitemsss = delivery.deliveryasset_set.all()
-        # deliveryItem, dispatched = DeliveryAsset.objects.get_or_create(
-        # delivery=delivery, asset=deliveryitemsss)
 
-        # x = Asset.objects.get(pk=deliveryitemsss)
-        # deliveryItem = DeliveryAsset.objects.get(
-        # delivery=delivery)
+        # asset = Asset.objects.all()
+        # x=asset.delivery_set.all()
+        # asset.accessory =True
+        
 
         delivery.dispatched = True
-        delivery.toLocation = loc
+        delivery.vendor = vendor
         delivery.date_dispatched = datetime.datetime.now()
         delivery.fromLocation = request.user.staff.location
 

@@ -15,9 +15,13 @@ class RepairDeliveryAdmin(admin.ModelAdmin):
 
 @admin.register(RepairTrans)
 class RepairTransAdmin(admin.ModelAdmin):
-    list_display = ('__all__',)
-    # search_fields = ('asset__name', 'asset__barcode',
-    #                  'asset__serialNumber', 'repair_delivery__delivery')
+    list_display = ('asset', 'repair_delivery', 'date_dispatched', 'received', )
+    search_fields = (
+        'asset__name', 
+        'asset__barcode',
+        'asset__serialNumber', 
+        'repair_delivery__delivery__deliveryNo',
+         )
 
 
 @admin.register(Vendor)

@@ -1,4 +1,0 @@
-select assets from the Assets Apps
-dispatch to a vendor 
-print delivery note.
-receive back from the vendor>> figure out the mechanism.
