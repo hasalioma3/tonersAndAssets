@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.staticfiles import finders
 from django.conf import settings
-from django.conf.urls import url
+# from django.conf.urls import url
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.http import HttpResponse, FileResponse
@@ -49,7 +49,7 @@ def deliveries(request):
 def assets(request):
     if request.user.is_authenticated:
         # place a checkbox to toggle internal transfer vs external transfer.
-        
+
         branch = Location.objects.all()
         vendor = Vendor.objects.all()
         staff = request.user.staff
@@ -91,16 +91,16 @@ def assets(request):
             fs.location = request.user.staff.location
             fs.save()
             return redirect('/assets')
-        
+
         else:
-            return(HttpResponse("An error occurred"))
-        
+            return (HttpResponse("An error occurred"))
+
         return redirect('/assets')
     context = {
         'form': form,
         'pages': pages,
         'branch': branch,
-        'vendor':vendor,
+        'vendor': vendor,
         'delivery': delivery,
         'staff': staff,
         'deliveryList': deliveryList,
@@ -118,7 +118,7 @@ def updateAsset(request):
     data = json.loads(request.body)
     assetId = data['assetId']
     action = data['action']
-    action = data['vendor']
+    vendor = data['vendor']
 
     print('Action:', action)
     print('Product:', assetId)
@@ -165,7 +165,6 @@ def processResponse(request, *args, **kwargs):
         # asset = Asset.objects.all()
         # x=asset.delivery_set.all()
         # asset.accessory =True
-        
 
         delivery.dispatched = True
         delivery.vendor = vendor
@@ -180,11 +179,12 @@ def processResponse(request, *args, **kwargs):
     return JsonResponse('Item was Added', safe=False)
     # return redirect('assets:index')
 
+
 def renderPDF(request, *args, **kwargs):
     pk = kwargs.get('pk')
     template = 'assets/delivery.html'
     filename = 'DEL-' + pk.zfill(6)
-    download_filename= "%s.pdf" %(filename)
+    download_filename = "%s.pdf" % (filename)
     if request.user.is_authenticated:
         staff = request.user.staff
         delivery = Delivery.objects.filter(staff=staff, dispatched=True, pk=pk)
@@ -193,7 +193,7 @@ def renderPDF(request, *args, **kwargs):
             'delivery': delivery,
             'logo': logo
         }
-    return render_to_pdf_response(request,template,context)
+    return render_to_pdf_response(request, template, context)
 
 # create a view to issue an asset to a User
 # 1. select User,dept,Asset and Issue.. Create table to maintain Asset Issues.

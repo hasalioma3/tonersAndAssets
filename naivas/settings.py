@@ -1,4 +1,10 @@
 import os
+from urllib.parse import quote
+
+import django
+
+
+django.utils.http.urlquote = quote
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,12 +37,13 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'django_python3_ldap',
+    'crispy_bootstrap5',
 
-    'apps.toners',
+    'apps.toners.apps.TonersConfig',
     'apps.assets',
     'apps.asset_trans',
     'apps.repair'
- 
+
 ]
 
 MIDDLEWARE = [
@@ -50,11 +57,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'naivas.urls'
-DEFAULT_AUTO_FIELD='django.db.models.AutoField' 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -112,7 +119,7 @@ DATABASES = {
 #             'Persist Security Info': False,
 #             'Connection Timeout': 30,
 #         }
-#     } 
+#     }
 # }
 SITE_ID = 1
 
@@ -136,15 +143,16 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTHENTICATION_BACKENDS = (
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
+    'django_python3_ldap.auth.LDAPBackend',
     'django.contrib.auth.backends.ModelBackend',
     'django_python3_ldap.auth.LDAPBackend',
 )
 
 
-LDAP_AUTH_URL = "ldap://192.168.100.1:389"
+LDAP_AUTH_URL = "ldap://192.168.100.232:389"
 
 LDAP_AUTH_CONNECTION_USERNAME = 'hassan.omar'
-LDAP_AUTH_CONNECTION_PASSWORD = 'hasalioma@1'
+LDAP_AUTH_CONNECTION_PASSWORD = 'L@zyadmin123!'
 
 LDAP_AUTH_USE_TLS = False
 
@@ -197,9 +205,24 @@ LDAP_AUTH_RECEIVE_TIMEOUT = None
 #     'is_superuser': 'ou=Naivas Users,ou=groups,dc=naivas,dc=com',
 # }
 
-LOGIN_REDIRECT_URL =('/')
+LOGIN_REDIRECT_URL = ('/')
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django_python3_ldap": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+    },
+}
 
 LANGUAGE_CODE = 'en-us'
 
@@ -216,7 +239,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
-STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
